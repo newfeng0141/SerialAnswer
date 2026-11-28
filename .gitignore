@@ -1,2 +1,6 @@
 __pycache__/
 *.pyc
+
+# 构建目录（CLion / 命令行）
+build/
+cmake-build-*/
