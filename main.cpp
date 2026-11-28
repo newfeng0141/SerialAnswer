@@ -31,3 +31,36 @@ static unsigned short crc16(const unsigned char* p,int n) {
     }
     return crc;
 }
+
+static int build_frame(unsigned char type,unsigned char seq,const unsigned char* data,int dlen,unsigned char*out) {
+    if (dlen<0||dlen>255)return 0;
+    out[0]=SYNC0;
+    out[1]=SYNC1;
+    out[2]=VER;
+    out[3]=type;
+    out[4]=seq;
+    out[5]=(unsigned char)dlen;
+    for (int i=0;i<dlen;i++) {
+        out[6+i]=data[i];
+    }
+    unsigned short c=crc16(out+2,4+dlen);
+    out[6+dlen]=(unsigned char)(c& 0xFF);
+    out[7+dlen]=(unsigned char)(c>>8);
+    return 8+dlen;
+}
+static int build_frame(unsigned char type,unsigned char seq,const unsigned char* data,int dlen,unsigned char*out) {
+    if (dlen<0||dlen>255)return 0;
+    out[0]=SYNC0;
+    out[1]=SYNC1;
+    out[2]=VER;
+    out[3]=type;
+    out[4]=seq;
+    out[5]=(unsigned char)dlen;
+    for (int i=0;i<dlen;i++) {
+        out[6+i]=data[i];
+    }
+    unsigned short c=crc16(out+2,4+dlen);
+    out[6+dlen]=(unsigned char)(c& 0xFF);
+    out[7+dlen]=(unsigned char)(c>>8);
+    return 8+dlen;
+}
